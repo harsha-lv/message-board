@@ -22,7 +22,7 @@ const messages = [
 ];
 
 app.get("/", (req: Request, res: Response) => {
-  res.render("index", { title: "message board", messages: messages })
+  res.render("index", { title: "message board", messages: messages, formLink: `http://localhost:${PORT}/new`})
 })
 
 app.get("/new", (req: Request, res: Response) => {
@@ -36,6 +36,7 @@ app.post("/new", (req: Request, res: Response) => {
   const messageUser = req.body.messageUser;
   const messageDate = req.body.messageDate;
   messages.push({text: messageText, user: messageUser, added: messageDate});
+  res.redirect("/");
 })
 
 const PORT = 3000;
