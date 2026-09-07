@@ -34,7 +34,7 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/new", (req: Request, res: Response) => {
   const messageText = req.body.messageText;
   const messageUser = req.body.messageUser;
-  const messageDate = req.body.messageDate;
+  const messageDate = new Date(req.body.messageDate);
   messages.push({text: messageText, user: messageUser, added: messageDate});
   res.redirect("/");
 })

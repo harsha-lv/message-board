@@ -17,4 +17,4 @@ html(lang="en")
           | #{message.text}
         p
           strong Added: 
-          | #{message.added.toLocaleString()}
+          | #{message.added.toLocaleString().split(", ")[0]}
