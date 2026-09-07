@@ -9,7 +9,7 @@ app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "pug")
 
 const convertDateToString = (d: Date) => {
-  return d.toLocaleString().split(", ")[0];
+  return d.toLocaleString('en-GB').split(", ")[0];
 }
 
 const messages = [
@@ -25,11 +25,11 @@ const messages = [
   }
 ];
 
-app.get("/", (req: Request, res: Response) => {
-  res.render("index", { title: "message board", messages: messages, formLink: "/new"})
-})
-
 app.use(express.urlencoded({ extended: true }));
+
+app.get("/", (req: Request, res: Response) => {
+  res.render("index", { title: "message board", messages: messages})
+})
 
 app.get("/new", (req: Request, res: Response) => {
   res.render("form")
@@ -38,7 +38,7 @@ app.get("/new", (req: Request, res: Response) => {
 app.post("/new", (req: Request, res: Response) => {
   const messageText = req.body.messageText;
   const messageUser = req.body.messageUser;
-  const messageDate = req.body.messageDate;
+  const messageDate = convertDateToString(new Date(req.body.messageDate));
   messages.push({text: messageText, user: messageUser, added: messageDate});
   res.redirect('/')
 })
