@@ -22,7 +22,7 @@ const messages = [
 ];
 
 app.get("/", (req: Request, res: Response) => {
-  res.render("index", { title: "message board", messages: messages, formLink: "http://localhost:3000"})
+  res.render("index", { title: "message board", messages: messages, formLink: "/new"})
 })
 
 app.use(express.urlencoded({ extended: true }));
