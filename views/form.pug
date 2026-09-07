@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title New Message
+  body
+    h1 New Message
+    form(method="POST" action="/new")
+      div
+        label(for="messageUser") Author
+        input#messageUser(type="text" name="messageUser")
+      div
+        label(for="messageText") Message
+        input#messageText(type="text" name="messageText")
+      div 
+        label(for="messageDate") Date 
+        input#messageDate(type="date" name="messageDate")
+      button(type="submit") Submit

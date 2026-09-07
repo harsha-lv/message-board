@@ -1,6 +1,12 @@
+import path from "node:path"
+import { fileURLToPath } from "node:url"
 import express, { type Application, type Request, type Response } from "express"
 
 const app: Application = express()
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+app.set("views", path.join(__dirname, "views"))
+app.set("view engine", "pug")
 
 const messages = [
   {
@@ -15,11 +21,21 @@ const messages = [
   }
 ];
 
-
-
+app.get("/", (req: Request, res: Response) => {
+  res.render("index", { title: "message board", messages: messages })
+})
 
 app.get("/new", (req: Request, res: Response) => {
-  res.send("new")
+  res.render("form")
+})
+
+app.use(express.urlencoded({ extended: true }));
+
+app.post("/new", (req: Request, res: Response) => {
+  const messageText = req.body.messageText;
+  const messageUser = req.body.messageUser;
+  const messageDate = req.body.messageDate;
+  messages.push({text: messageText, user: messageUser, added: messageDate});
 })
 
 const PORT = 3000;
