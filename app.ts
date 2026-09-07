@@ -8,16 +8,20 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 app.set("views", path.join(__dirname, "views"))
 app.set("view engine", "pug")
 
+const convertDateToString = (d: Date) => {
+  return d.toLocaleString().split(", ")[0];
+}
+
 const messages = [
   {
     text: "Hi there!",
     user: "harsha",
-    added: new Date()
+    added: convertDateToString(new Date())
   },
   {
     text: "Hello World!",
     user: "vaibhav",
-    added: new Date()
+    added: convertDateToString(new Date())
   }
 ];
 
