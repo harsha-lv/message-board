@@ -22,21 +22,21 @@ const messages = [
 ];
 
 app.get("/", (req: Request, res: Response) => {
-  res.render("index", { title: "message board", messages: messages, formLink: `http://localhost:${PORT}/new`})
+  res.render("index", { title: "message board", messages: messages, formLink: "http://localhost:3000"})
 })
+
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/new", (req: Request, res: Response) => {
   res.render("form")
 })
 
-app.use(express.urlencoded({ extended: true }));
-
 app.post("/new", (req: Request, res: Response) => {
   const messageText = req.body.messageText;
   const messageUser = req.body.messageUser;
-  const messageDate = new Date(req.body.messageDate);
+  const messageDate = req.body.messageDate;
   messages.push({text: messageText, user: messageUser, added: messageDate});
-  res.redirect("/");
+  res.redirect('/')
 })
 
 const PORT = 3000;
