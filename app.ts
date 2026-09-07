@@ -35,6 +35,13 @@ app.get("/new", (req: Request, res: Response) => {
   res.render("form")
 })
 
+app.get("/:urlUser", (req: Request, res: Response) => {
+  const selectedUser = messages.find(message => message.user == req.params.urlUser);
+  if (selectedUser){
+    res.render("message", { selectedUser: selectedUser })
+  }
+})
+
 app.post("/new", (req: Request, res: Response) => {
   const messageText = req.body.messageText;
   const messageUser = req.body.messageUser;
