@@ -1,59 +1,41 @@
-import path from "node:path"
-import { fileURLToPath } from "node:url"
-import express, { type Application, type Request, type Response } from "express"
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import express, { type Application, type Request, type Response, type NextFunction } from "express";
+import messageRouter from "./routes/messageRouter.ts";
 
-const app: Application = express()
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const app: Application = express();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-app.set("views", path.join(__dirname, "views"))
-app.set("view engine", "pug")
-
-const convertDateToString = (d: Date) => {
-  return d.toLocaleString('en-GB').split(", ")[0];
-}
-
-const messages = [
-  {
-    text: "Hi there!",
-    user: "harsha",
-    added: convertDateToString(new Date())
-  },
-  {
-    text: "Hello World!",
-    user: "vaibhav",
-    added: convertDateToString(new Date())
-  }
-];
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (req: Request, res: Response) => {
-  res.render("index", { title: "message board", messages: messages})
-})
+app.use("/", messageRouter);
 
-app.get("/new", (req: Request, res: Response) => {
-  res.render("form")
-})
+// 404 handler
+app.use((req: Request, res: Response) => {
+  res.status(404).render("message", {
+    title: "Page Not Found",
+    error: `Route ${req.originalUrl} not found.`,
+    selectedUser: null,
+  });
+});
 
-app.get("/:urlUser", (req: Request, res: Response) => {
-  const selectedUser = messages.find(message => message.user == req.params.urlUser);
-  if (selectedUser){
-    res.render("message", { selectedUser: selectedUser })
-  }
-})
+// Centralized error handler
+app.use((err: Error, req: Request, res: Response, _next: NextFunction) => {
+  console.error("Internal Server Error:", err);
+  res.status(500).render("message", {
+    title: "Server Error",
+    error: "An unexpected error occurred. Please try again later.",
+    selectedUser: null,
+  });
+});
 
-app.post("/new", (req: Request, res: Response) => {
-  const messageText = req.body.messageText;
-  const messageUser = req.body.messageUser;
-  const messageDate = convertDateToString(new Date(req.body.messageDate));
-  messages.push({text: messageText, user: messageUser, added: messageDate});
-  res.redirect('/')
-})
+const PORT = Number(process.env.PORT) || 3000;
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
-const PORT = 3000;
-app.listen(PORT, (error) => {
-  if (error){
-    throw error;
-  }
-  console.log("listening")
-})
+export default app;

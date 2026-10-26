@@ -4,18 +4,34 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     title= title
+    link(rel="stylesheet" href="/style.css")
   body
-    a(href="/new") Send new message 
-    h1= title
-    each message in messages
-      article
-        p
-          strong User: 
-          | #{message.user}
-        p
-          strong Message: 
-          | #{message.text}
-        p
-          strong Added: 
-          | #{message.added}
-        a(href=`/${message.user}`) Open 
+    .app-container
+      header.app-header
+        h1.brand-title
+          span= title
+          span.brand-badge PostgreSQL
+        a#new-message-btn.btn.btn-primary(href="/new") + Send new message
+
+      if messages && messages.length > 0
+        main.messages-list
+          each message in messages
+            article.message-card(id=`message-${message.id || message.user}`)
+              .card-header
+                .user-profile
+                  .avatar= message.user ? message.user.charAt(0).toUpperCase() : '?'
+                  p
+                    strong User: 
+                    span.user-name= message.user
+                p.message-date
+                  strong Added: 
+                  | #{message.added}
+              p.message-body
+                strong Message: 
+                | #{message.text}
+              .card-footer
+                a.btn.btn-secondary.btn-sm(id=`open-${message.user}` href=`/${message.user}`) Open &rarr;
+      else
+        .empty-state
+          p No messages found in the database.
+          a.btn.btn-primary(href="/new") Post the first message

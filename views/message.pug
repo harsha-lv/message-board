@@ -3,15 +3,30 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title= title
+    title= title || "Message Details"
+    link(rel="stylesheet" href="/style.css")
   body
-    article
-          p
-            strong User: 
-            | #{selectedUser.user}
-          p
-            strong Message: 
-            | #{selectedUser.text}
-          p
-            strong Added: 
-            | #{selectedUser.added}
+    .app-container
+      header.app-header
+        h1.brand-title Message Details
+        a.btn.btn-secondary.btn-sm(href="/") &larr; Back to Board
+
+      if error
+        .alert-error= error
+      else if selectedUser
+        article.detail-card
+          .card-header
+            .user-profile
+              .avatar= selectedUser.user ? selectedUser.user.charAt(0).toUpperCase() : '?'
+              p
+                strong User: 
+                span.user-name= selectedUser.user
+            p.message-date
+              strong Added: 
+              | #{selectedUser.added}
+          blockquote.detail-quote
+            p
+              strong Message: 
+              | #{selectedUser.text}
+          .card-footer
+            a.btn.btn-secondary(href="/") &larr; Back to all messages

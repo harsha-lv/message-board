@@ -3,17 +3,28 @@ html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title New Message
+    title= title || "New Message"
+    link(rel="stylesheet" href="/style.css")
   body
-    h1 New Message
-    form(method="POST" action="/new")
-      div
-        label(for="messageUser") Author
-        input#messageUser(type="text" name="messageUser")
-      div
-        label(for="messageText") Message
-        input#messageText(type="text" name="messageText")
-      div 
-        label(for="messageDate") Date 
-        input#messageDate(type="date" name="messageDate")
-      button(type="submit") Submit
+    .app-container
+      .form-card
+        header.app-header
+          h1.brand-title New Message
+          a.btn.btn-secondary.btn-sm(href="/") &larr; Back to Board
+
+        if error
+          .alert-error= error
+
+        form(method="POST" action="/new")
+          .form-group
+            label.form-label(for="messageUser") Author
+            input#messageUser.form-input(type="text" name="messageUser" placeholder="Your name (e.g. harsha)" required)
+          .form-group
+            label.form-label(for="messageText") Message
+            input#messageText.form-input(type="text" name="messageText" placeholder="Write your message here..." required)
+          .form-group
+            label.form-label(for="messageDate") Date
+            input#messageDate.form-input(type="date" name="messageDate")
+          .form-actions
+            button#submit-btn.btn.btn-primary(type="submit") Submit
+            a.btn.btn-secondary(href="/") Cancel

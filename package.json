@@ -4,6 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node app.ts",
+    "dev": "node --watch app.ts",
+    "seed": "node db/populatedb.ts",
+    "check": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,11 +23,14 @@
   },
   "homepage": "https://github.com/harsha-lv/message-board#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "dotenv": "^18.0.9",
+    "express": "^5.2.1",
+    "pg": "^8.23.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.4.1",
+    "@types/pg": "^8.23.1",
     "pug": "^3.0.4",
     "typescript": "^7.0.2"
   }
